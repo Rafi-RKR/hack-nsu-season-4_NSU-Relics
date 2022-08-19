@@ -1,0 +1,24 @@
+
+.box{
+    text-align: center;
+    color: lightgray;
+    width: 30%;
+    margin: auto;
+    
+}
+.box h4{
+    margin-bottom: 35px;
+}
+.inside_box{
+    border: 1px solid black;
+    margin-top: 100px;
+    background: black;
+    padding: 50px 0px;
+}
+form input{
+    border-radius: 5px;
+}
+form label{
+    margin-bottom: 5px;
+    
+}
