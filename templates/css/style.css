@@ -11,27 +11,27 @@
     width: 30%;
     margin: auto;
     padding: 40px 0px;
+    background: white;
+    box-shadow: 4px 8px 8px black;
 }
 .box h4{
     margin-bottom: 35px;
 }
-.google{
-    padding: 9px 35px;
-    text-decoration: none;
-    border: 1px solid #4081EC;
-    border-radius: 40px;
-    background: #4081EC;
+body{
+    background-color: rgba(127, 255, 212, 0.4);
+}
+input[type=submit]{
+    background: black;
     color: white;
-    padding-bottom: 13px;
-    font-weight: 500;
+    padding: 4px 20px;
+    border-radius: 5px;
+    border: none;
 }
-.google img{
-    width: 20px;
-    margin-right: 5px;
-}
-.google:hover{
-    background: #2f60af;
+input[type=submit]:hover{
+    background-image: linear-gradient(blue, black);
+    border: none;
     transition: .3s;
-    border: 1px solid #2f60af;
-    color: white;
+}
+form a:hover{
+    color: red;
 }
