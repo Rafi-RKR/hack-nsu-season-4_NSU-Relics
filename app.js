@@ -1,9 +1,11 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
-var crypto = require("crypto");
+const crypto = require("crypto");
+const path = require("path");
 
 const app = express();
+const router = express.Router();
 app.use(express.static("public"));
 app.use(bodyParser.urlencoded({extended: true}));
 mongoose.connect("mongodb://localhost:27017/ovijogDB")
@@ -65,6 +67,27 @@ app.post("/login", function(req, res){
 
 app.get("/dashboard", function(req, res){
     res.sendFile(__dirname + "/user_dashboard.html")
+})
+
+app.post("/dashboard", function (req, res){
+    if (req.body.redirect === "Make New Complain" || req.body.redirect === "Complain Now"){
+        res.redirect("/complain");
+    }
+    else if (req.body.redirect === "Complain List"){
+        res.redirect("/list");
+    }
+    else if (req.body.redirect === "Logout"){
+        res.redirect("/login");
+    }
+})
+
+
+app.get("/complain", function (req, res){
+    res.sendFile(__dirname + "/user_complain.html")
+})
+
+app.get("/list", function(req, res){
+    res.sendFile(__dirname + "/user_complain_list.html")
 })
 
 app.listen(3000, function(){
