@@ -84,3 +84,10 @@ form input{
     background: black;
     transition: .5s;
 }
+footer{
+    text-align: center;
+    background: rgb(3, 3, 37);
+    color: white;
+    padding-top: 20px;
+    padding-bottom: 10px;
+}
