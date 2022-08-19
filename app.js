@@ -1,39 +1,71 @@
 const express = require("express");
 const bodyParser = require("body-parser");
-const https = require("https");
+const mongoose = require("mongoose");
+var crypto = require("crypto");
 
 const app = express();
 app.use(express.static("public"));
 app.use(bodyParser.urlencoded({extended: true}));
+mongoose.connect("mongodb://localhost:27017/ovijogDB")
 
+const userSchema = new mongoose.Schema ({
+    hash: String,
+    password: String
+});
+const User = mongoose.model("User", userSchema);
 
+// const user = new User({
+//     hash: "dhuaoidkhnwjaefhnewfjbkjhbewhjfknewhjfbh",
+//     password: "123"
+// })
+// user.save();
 
-app.get("/", function(req, res){
-    res.sendFile(__dirname + "/login.html")
+app.get("/register", function(req, res){
+    res.sendFile(__dirname + "/register.html")
 })
 
-// const CLIENT_ID = "213809152009-7vn8fefmtfr6kb7baguf8umqoqq5o8gl.apps.googleusercontent.com";
+app.post("/register", function(req, res){
+    const email = req.body.email;
+    const userPasssword = req.body.password;
 
-// const clientAuth = require('google-auth-library');
-// const client = new clientAuth(CLIENT_ID);
-// async function verify() {
-//   const ticket = await client.verifyIdToken({
-//       idToken: token,
-//       audience: CLIENT_ID,  // Specify the CLIENT_ID of the app that accesses the backend
-//       // Or, if multiple clients access the backend:
-//       //[CLIENT_ID_1, CLIENT_ID_2, CLIENT_ID_3]
-//   });
-//   const payload = ticket.getPayload();
-//   const userid = payload['sub'];
-//   // If request specified a G Suite domain:
-//   // const domain = payload['hd'];
-// }
-// verify().catch(console.error);
+    var hashEmail = crypto.createHash('md5').update(email).digest('hex');
+    const user = new User({
+        hash: hashEmail,
+        password: userPasssword
+    })
+    user.save();
 
+    res.redirect("/login");
+})
 
+app.get("/login", function(req, res){
+    res.sendFile(__dirname + "/index.html")
+})
 
+app.post("/login", function(req, res){
+    const email = req.body.email;
+    const userPasssword = req.body.password;
+    var hashEmail = crypto.createHash('md5').update(email).digest('hex');
+    User.find(function (err, users) {
+        if (err){
+            console.log(err);
+        }
+        else{
+            users.forEach(function(users){
+                if(users.hash === hashEmail && users.password === userPasssword){
+                    res.redirect("/dashboard");
+                }
+                else{
+                    console.log("email or password was wrong !")
+                }
+            })
+        }
+    });
+});
 
-
+app.get("/dashboard", function(req, res){
+    res.sendFile(__dirname + "/user_dashboard.html")
+})
 
 app.listen(3000, function(){
     console.log("Server Running...");
